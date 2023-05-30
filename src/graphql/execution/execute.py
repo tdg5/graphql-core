@@ -520,10 +520,13 @@ class ExecutionContext:
         # last_time = new_time
 
         if self.middleware_manager:
-            # new_time = time.perf_counter()
-            # print(f"5: {new_time} : {new_time - last_time}", flush=True)
-            # last_time = new_time
+            new_time = time.perf_counter()
+            print(f"5: {new_time} : {new_time - last_time}", flush=True)
+            last_time = new_time
             resolve_fn = self.middleware_manager.get_field_resolver(resolve_fn)
+            new_time = time.perf_counter()
+            print(f"5a: {new_time} : {new_time - last_time}", flush=True)
+            last_time = new_time
 
         # new_time = time.perf_counter()
         # print(f"6: {new_time} : {new_time - last_time}", flush=True)
