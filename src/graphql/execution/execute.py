@@ -1,4 +1,3 @@
-import logging
 from asyncio import ensure_future, gather
 from collections.abc import Mapping
 from inspect import isawaitable
@@ -498,8 +497,7 @@ class ExecutionContext:
         calling its resolve function, then calls complete_value to await coroutine
         objects, serialize scalars, or execute the sub-selection-set for objects.
         """
-        logging.info("hi!")
-        print("hi!")
+        return Undefined
         field_def = get_field_def(self.schema, parent_type, field_nodes[0])
         if not field_def:
             return Undefined
