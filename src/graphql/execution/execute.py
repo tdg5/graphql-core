@@ -539,9 +539,6 @@ class ExecutionContext:
                         completed = self.complete_value(
                             return_type, field_nodes, info, path, await result
                         )
-                        new_time = time.perf_counter()
-                        print(f"11b: {new_time} : {new_time - last_time}", flush=True)
-                        last_time = new_time
                         if self.is_awaitable(completed):
                             new_time = time.perf_counter()
                             print(f"11c: {new_time} : {new_time - last_time}", flush=True)
@@ -550,9 +547,6 @@ class ExecutionContext:
                             new_time = time.perf_counter()
                             print(f"11d: {new_time} : {new_time - last_time}", flush=True)
                             return thing
-                        new_time = time.perf_counter()
-                        print(f"11e: {new_time} : {new_time - last_time}", flush=True)
-                        last_time = new_time
                         return completed
                     except Exception as raw_error:
                         error = located_error(raw_error, field_nodes, path.as_list())
@@ -562,17 +556,15 @@ class ExecutionContext:
                 new_time = time.perf_counter()
                 print(f"12: {new_time} : {new_time - last_time}", flush=True)
                 last_time = new_time
-                return await_result(last_time)
+                thang = await_result(last_time)
+                new_time = time.perf_counter()
+                print(f"13: {new_time} : {new_time - last_time}", flush=True)
+                last_time = new_time
+                return thang
 
-            new_time = time.perf_counter()
-            print(f"13: {new_time} : {new_time - last_time}", flush=True)
-            last_time = new_time
             completed = self.complete_value(
                 return_type, field_nodes, info, path, result
             )
-            new_time = time.perf_counter()
-            print(f"14: {new_time} : {new_time - last_time}", flush=True)
-            last_time = new_time
             if self.is_awaitable(completed):
                 # noinspection PyShadowingNames
                 fun_time = last_time
