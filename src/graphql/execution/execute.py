@@ -547,7 +547,7 @@ class ExecutionContext:
                 last_time = time.perf_counter()
                 print(f"11: {last_time} : {last_time - start_time}", flush=True)
                 async def await_result() -> Any:
-                    return Undefined
+                    return None
                     try:
                         completed = self.complete_value(
                             return_type, field_nodes, info, path, await result
