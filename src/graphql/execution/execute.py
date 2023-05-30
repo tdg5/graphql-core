@@ -1,3 +1,4 @@
+import time
 from asyncio import ensure_future, gather
 from collections.abc import Mapping
 from inspect import isawaitable
@@ -497,32 +498,54 @@ class ExecutionContext:
         calling its resolve function, then calls complete_value to await coroutine
         objects, serialize scalars, or execute the sub-selection-set for objects.
         """
-        return Undefined
+        start_time = time.perf_counter()
         field_def = get_field_def(self.schema, parent_type, field_nodes[0])
+        last_time = time.perf_counter()
+        print(f"1: {last_time} : {last_time - start_time}", flush=True)
         if not field_def:
             return Undefined
+        last_time = time.perf_counter()
+        print(f"2: {last_time} : {last_time - start_time}", flush=True)
 
         return_type = field_def.type
+        last_time = time.perf_counter()
+        print(f"3: {last_time} : {last_time - start_time}", flush=True)
         resolve_fn = field_def.resolve or self.field_resolver
+        last_time = time.perf_counter()
+        print(f"4: {last_time} : {last_time - start_time}", flush=True)
 
         if self.middleware_manager:
+            last_time = time.perf_counter()
+            print(f"5: {last_time} : {last_time - start_time}", flush=True)
             resolve_fn = self.middleware_manager.get_field_resolver(resolve_fn)
 
+        last_time = time.perf_counter()
+        print(f"6: {last_time} : {last_time - start_time}", flush=True)
         info = self.build_resolve_info(field_def, field_nodes, parent_type, path)
+        last_time = time.perf_counter()
+        print(f"7: {last_time} : {last_time - start_time}", flush=True)
 
         # Get the resolve function, regardless of if its result is normal or abrupt
         # (error).
         try:
+            last_time = time.perf_counter()
+            print(f"8: {last_time} : {last_time - start_time}", flush=True)
             # Build a dictionary of arguments from the field.arguments AST, using the
             # variables scope to fulfill any variable references.
             args = get_argument_values(field_def, field_nodes[0], self.variable_values)
+            last_time = time.perf_counter()
+            print(f"9: {last_time} : {last_time - start_time}", flush=True)
 
             # Note that contrary to the JavaScript implementation, we pass the context
             # value as part of the resolve info.
             result = resolve_fn(source, info, **args)
+            last_time = time.perf_counter()
+            print(f"10: {last_time} : {last_time - start_time}", flush=True)
 
             if self.is_awaitable(result):
                 # noinspection PyShadowingNames
+                last_time = time.perf_counter()
+                print(f"11: {last_time} : {last_time - start_time}", flush=True)
                 async def await_result() -> Any:
                     try:
                         completed = self.complete_value(
@@ -536,11 +559,17 @@ class ExecutionContext:
                         self.handle_field_error(error, return_type)
                         return None
 
+                last_time = time.perf_counter()
+                print(f"12: {last_time} : {last_time - start_time}", flush=True)
                 return await_result()
 
+            last_time = time.perf_counter()
+            print(f"13: {last_time} : {last_time - start_time}", flush=True)
             completed = self.complete_value(
                 return_type, field_nodes, info, path, result
             )
+            last_time = time.perf_counter()
+            print(f"14: {last_time} : {last_time - start_time}", flush=True)
             if self.is_awaitable(completed):
                 # noinspection PyShadowingNames
                 async def await_completed() -> Any:
@@ -551,10 +580,16 @@ class ExecutionContext:
                         self.handle_field_error(error, return_type)
                         return None
 
+                last_time = time.perf_counter()
+                print(f"15: {last_time} : {last_time - start_time}", flush=True)
                 return await_completed()
 
+            last_time = time.perf_counter()
+            print(f"16: {last_time} : {last_time - start_time}", flush=True)
             return completed
         except Exception as raw_error:
+            last_time = time.perf_counter()
+            print(f"xxx: {last_time} : {last_time - start_time}", flush=True)
             error = located_error(raw_error, field_nodes, path.as_list())
             self.handle_field_error(error, return_type)
             return None
