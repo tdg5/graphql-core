@@ -501,53 +501,54 @@ class ExecutionContext:
         start_time = time.perf_counter()
         field_def = get_field_def(self.schema, parent_type, field_nodes[0])
         last_time = start_time
-        new_time = time.perf_counter()
-        print(f"1: {new_time} : {new_time - last_time}", flush=True)
-        last_time = new_time
+        # new_time = time.perf_counter()
+        # print(f"1: {new_time} : {new_time - last_time}", flush=True)
+        # last_time = new_time
         if not field_def:
             return Undefined
-        new_time = time.perf_counter()
-        print(f"2: {new_time} : {new_time - last_time}", flush=True)
-        last_time = new_time
+        # new_time = time.perf_counter()
+        # print(f"2: {new_time} : {new_time - last_time}", flush=True)
+        # last_time = new_time
 
         return_type = field_def.type
-        new_time = time.perf_counter()
-        print(f"3: {new_time} : {new_time - last_time}", flush=True)
-        last_time = new_time
+        # new_time = time.perf_counter()
+        # print(f"3: {new_time} : {new_time - last_time}", flush=True)
+        # last_time = new_time
         resolve_fn = field_def.resolve or self.field_resolver
-        new_time = time.perf_counter()
-        print(f"4: {new_time} : {new_time - last_time}", flush=True)
-        last_time = new_time
+        # new_time = time.perf_counter()
+        # print(f"4: {new_time} : {new_time - last_time}", flush=True)
+        # last_time = new_time
 
         if self.middleware_manager:
-            new_time = time.perf_counter()
-            print(f"5: {new_time} : {new_time - last_time}", flush=True)
-            last_time = new_time
+            # new_time = time.perf_counter()
+            # print(f"5: {new_time} : {new_time - last_time}", flush=True)
+            # last_time = new_time
             resolve_fn = self.middleware_manager.get_field_resolver(resolve_fn)
 
-        new_time = time.perf_counter()
-        print(f"6: {new_time} : {new_time - last_time}", flush=True)
-        last_time = new_time
+        # new_time = time.perf_counter()
+        # print(f"6: {new_time} : {new_time - last_time}", flush=True)
+        # last_time = new_time
         info = self.build_resolve_info(field_def, field_nodes, parent_type, path)
-        new_time = time.perf_counter()
-        print(f"7: {new_time} : {new_time - last_time}", flush=True)
-        last_time = new_time
+        # new_time = time.perf_counter()
+        # print(f"7: {new_time} : {new_time - last_time}", flush=True)
+        # last_time = new_time
 
         # Get the resolve function, regardless of if its result is normal or abrupt
         # (error).
         try:
-            new_time = time.perf_counter()
-            print(f"8: {new_time} : {new_time - last_time}", flush=True)
-            last_time = new_time
+            # new_time = time.perf_counter()
+            # print(f"8: {new_time} : {new_time - last_time}", flush=True)
+            # last_time = new_time
             # Build a dictionary of arguments from the field.arguments AST, using the
             # variables scope to fulfill any variable references.
             args = get_argument_values(field_def, field_nodes[0], self.variable_values)
-            new_time = time.perf_counter()
-            print(f"9: {new_time} : {new_time - last_time}", flush=True)
-            last_time = new_time
+            # new_time = time.perf_counter()
+            # print(f"9: {new_time} : {new_time - last_time}", flush=True)
+            # last_time = new_time
 
             # Note that contrary to the JavaScript implementation, we pass the context
             # value as part of the resolve info.
+            last_time = time.perf_counter()
             result = resolve_fn(source, info, **args)
             new_time = time.perf_counter()
             print(f"10: {new_time} : {new_time - last_time}", flush=True)
@@ -555,43 +556,43 @@ class ExecutionContext:
 
             if self.is_awaitable(result):
                 # noinspection PyShadowingNames
-                new_time = time.perf_counter()
-                print(f"11: {new_time} : {new_time - last_time}", flush=True)
-                last_time = new_time
+                # new_time = time.perf_counter()
+                # print(f"11: {new_time} : {new_time - last_time}", flush=True)
+                # last_time = new_time
                 fun_time = last_time
 
                 async def await_result(some_time) -> Any:
                     last_time = some_time
                     try:
-                        new_time = time.perf_counter()
-                        print(f"11a: {new_time} : {new_time - last_time}", flush=True)
-                        last_time = new_time
+                        # new_time = time.perf_counter()
+                        # print(f"11a: {new_time} : {new_time - last_time}", flush=True)
+                        # last_time = new_time
                         completed = self.complete_value(
                             return_type, field_nodes, info, path, await result
                         )
-                        new_time = time.perf_counter()
-                        print(f"11b: {new_time} : {new_time - last_time}", flush=True)
-                        last_time = new_time
+                        # new_time = time.perf_counter()
+                        # print(f"11b: {new_time} : {new_time - last_time}", flush=True)
+                        # last_time = new_time
                         if self.is_awaitable(completed):
-                            new_time = time.perf_counter()
-                            print(f"11c: {new_time} : {new_time - last_time}", flush=True)
-                            last_time = new_time
+                            # new_time = time.perf_counter()
+                            # print(f"11c: {new_time} : {new_time - last_time}", flush=True)
+                            # last_time = new_time
                             thing = await completed
-                            new_time = time.perf_counter()
-                            print(f"11d: {new_time} : {new_time - last_time}", flush=True)
+                            # new_time = time.perf_counter()
+                            # print(f"11d: {new_time} : {new_time - last_time}", flush=True)
                             return thing
-                        new_time = time.perf_counter()
-                        print(f"11e: {new_time} : {new_time - last_time}", flush=True)
-                        last_time = new_time
+                        # new_time = time.perf_counter()
+                        # print(f"11e: {new_time} : {new_time - last_time}", flush=True)
+                        # last_time = new_time
                         return completed
                     except Exception as raw_error:
                         error = located_error(raw_error, field_nodes, path.as_list())
                         self.handle_field_error(error, return_type)
                         return None
 
-                new_time = time.perf_counter()
-                print(f"12: {new_time} : {new_time - last_time}", flush=True)
-                last_time = new_time
+                # new_time = time.perf_counter()
+                # print(f"12: {new_time} : {new_time - last_time}", flush=True)
+                # last_time = new_time
                 return await_result(last_time)
 
             new_time = time.perf_counter()
