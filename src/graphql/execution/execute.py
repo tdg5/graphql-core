@@ -560,9 +560,8 @@ class ExecutionContext:
                 last_time = new_time
                 fun_time = last_time
 
-                async def await_result() -> Any:
-                    nonlocal fun_time
-                    last_time = fun_time
+                async def await_result(some_time) -> Any:
+                    last_time = some_time
                     try:
                         new_time = time.perf_counter()
                         print(f"11a: {new_time} : {new_time - last_time}", flush=True)
@@ -593,8 +592,7 @@ class ExecutionContext:
                 new_time = time.perf_counter()
                 print(f"12: {new_time} : {new_time - last_time}", flush=True)
                 last_time = new_time
-                fun_time = time.perf_counter()
-                return await_result()
+                return await_result(last_time)
 
             new_time = time.perf_counter()
             print(f"13: {new_time} : {new_time - last_time}", flush=True)
