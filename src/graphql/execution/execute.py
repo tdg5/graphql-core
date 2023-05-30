@@ -501,57 +501,27 @@ class ExecutionContext:
         start_time = time.perf_counter()
         field_def = get_field_def(self.schema, parent_type, field_nodes[0])
         last_time = start_time
-        new_time = time.perf_counter()
-        print(f"1: {new_time} : {new_time - last_time}", flush=True)
-        last_time = new_time
         if not field_def:
             return Undefined
-        new_time = time.perf_counter()
-        print(f"2: {new_time} : {new_time - last_time}", flush=True)
-        last_time = new_time
 
         return_type = field_def.type
-        new_time = time.perf_counter()
-        print(f"3: {new_time} : {new_time - last_time}", flush=True)
-        last_time = new_time
         resolve_fn = field_def.resolve or self.field_resolver
-        new_time = time.perf_counter()
-        print(f"4: {new_time} : {new_time - last_time}", flush=True)
-        last_time = new_time
 
         if self.middleware_manager:
-            new_time = time.perf_counter()
-            print(f"5: {new_time} : {new_time - last_time}", flush=True)
-            last_time = new_time
             resolve_fn = self.middleware_manager.get_field_resolver(resolve_fn)
 
-        new_time = time.perf_counter()
-        print(f"6: {new_time} : {new_time - last_time}", flush=True)
-        last_time = new_time
         info = self.build_resolve_info(field_def, field_nodes, parent_type, path)
-        new_time = time.perf_counter()
-        print(f"7: {new_time} : {new_time - last_time}", flush=True)
-        last_time = new_time
 
         # Get the resolve function, regardless of if its result is normal or abrupt
         # (error).
         try:
-            new_time = time.perf_counter()
-            print(f"8: {new_time} : {new_time - last_time}", flush=True)
-            last_time = new_time
             # Build a dictionary of arguments from the field.arguments AST, using the
             # variables scope to fulfill any variable references.
             args = get_argument_values(field_def, field_nodes[0], self.variable_values)
-            new_time = time.perf_counter()
-            print(f"9: {new_time} : {new_time - last_time}", flush=True)
-            last_time = new_time
 
             # Note that contrary to the JavaScript implementation, we pass the context
             # value as part of the resolve info.
             result = resolve_fn(source, info, **args)
-            new_time = time.perf_counter()
-            print(f"10: {new_time} : {new_time - last_time}", flush=True)
-            last_time = new_time
 
             if self.is_awaitable(result):
                 # noinspection PyShadowingNames
