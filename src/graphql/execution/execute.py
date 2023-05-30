@@ -577,9 +577,12 @@ class ExecutionContext:
                             new_time = time.perf_counter()
                             print(f"11c: {new_time} : {new_time - last_time}", flush=True)
                             last_time = new_time
-                            return await completed
+                            thing = await completed
+                            new_time = time.perf_counter()
+                            print(f"11d: {new_time} : {new_time - last_time}", flush=True)
+                            return thing
                         new_time = time.perf_counter()
-                        print(f"11d: {new_time} : {new_time - last_time}", flush=True)
+                        print(f"11e: {new_time} : {new_time - last_time}", flush=True)
                         last_time = new_time
                         return completed
                     except Exception as raw_error:
@@ -590,6 +593,7 @@ class ExecutionContext:
                 new_time = time.perf_counter()
                 print(f"12: {new_time} : {new_time - last_time}", flush=True)
                 last_time = new_time
+                fun_time = time.perf_counter()
                 return await_result()
 
             new_time = time.perf_counter()
